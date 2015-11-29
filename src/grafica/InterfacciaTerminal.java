@@ -46,6 +46,8 @@ public final class InterfacciaTerminal extends JPanel {
     
     private String comando = "";
 
+    private Commands exe = new Commands();
+
     public InterfacciaTerminal() {
         initComponent();
         initStream();
@@ -107,8 +109,11 @@ public final class InterfacciaTerminal extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    Commands prova = new Commands(comando);
-                    azioneEnter.setComando(comando);         
+
+                    exe.setCommand(comando);
+                    exe.execute();
+                    azioneEnter.setComando(comando);
+
                 } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && comando.equals("")) {
                     JTA_console.getActionMap().put(JTA_console.getInputMap().get(KeyStroke.getKeyStroke("BACK_SPACE")), new BackSpaceAction(JTA_console, false));
 

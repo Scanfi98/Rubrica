@@ -29,7 +29,10 @@ public class Commands {
     public Commands(String command) {
         this.command = command.toUpperCase();
         loadCommands();
-        execute();
+    }
+
+    public Commands() {
+        loadCommands();
     }
 
     private void loadCommands() {
@@ -51,7 +54,8 @@ public class Commands {
 
     }
 
-    private void execute() {
+    public void execute() {
+        command = command.toUpperCase();
         JTextArea jta = GlobalVariables.terminale.getJTA_console();
         JList jl = GlobalVariables.principale.getJLS_contatti();
         switch (command) {
