@@ -15,9 +15,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -474,6 +477,12 @@ public final class Interfaccia extends JPanel {
         JLS_contatti.addListSelectionListener((new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
+                Persona p = HM_modello.get(JLS_contatti.getSelectedValue());
+                if(p.isImgPath()){
+                    JP_immagine.setImmagine(p.getImg());
+                } else {
+
+                }
                 if (!JLS_contatti.isSelectionEmpty() && !JTB_multi.isSelected()) {
                     JL_instruction.setVisible(true);
                 } else if (!JLS_contatti.isSelectionEmpty() && JL_instruction.isVisible() && !JTB_multi.isSelected()) {

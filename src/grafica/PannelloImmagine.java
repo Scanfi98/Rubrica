@@ -45,7 +45,7 @@ public class PannelloImmagine extends JPanel implements MouseListener{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         try{
-            g.drawImage(immagine, ((this.getWidth() - immagine.getWidth())/2), ((this.getHeight()- immagine.getHeight())/2), null);
+            g.drawImage(immagine,0, 0, this.getWidth(), this.getHeight(), null);
         } catch(NullPointerException e){
 
         }
@@ -55,15 +55,21 @@ public class PannelloImmagine extends JPanel implements MouseListener{
         return immagine;
     }
 
-    public void setImmagine(BufferedImage immagine) {
-        this.immagine = immagine;
-        imgExist = true;
-        paintComponent(this.getGraphics());
+    public void setImmagine(String immagine) {
+        try {
+            this.immagine = ImageIO.read(new File(immagine));
+            imgExist = true;
+            paintComponent(this.getGraphics());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if(!imgExist)GlobalVariables.si = new SelezionaImmagineInterfaccia();
+        GlobalVariables.si.getSelected();
     }
 
     @Override

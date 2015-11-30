@@ -21,6 +21,7 @@ public class Persona {
     private String cognome;
     private String prefisso;
     private boolean imgPath;
+    private String img;
 
     public Persona(String nome, String cognome, String prefisso, String n_phone, String indirizzo, String email) {
         this.prefisso = prefisso;
@@ -29,7 +30,9 @@ public class Persona {
         this.cognome = cognome;
         this.indirizzo = indirizzo;
         this.email = email;
+        img = CreaUtente.removeSpace(nome + cognome).toUpperCase();
         this.imgPath = containsImg();
+
     }
 
     public String getNome() {
@@ -88,15 +91,20 @@ public class Persona {
         this.imgPath = imgPath;
     }
 
+    public String getImg() {
+        return img;
+    }
+
     public boolean containsImg(){
-        File f = new File("./Immagini");
+        File f = new File("Immagini\\");
 
         f.mkdirs();
 
         String [] s = f.list();
 
         for(String nome: s){
-            if(nome.equals(CreaUtente.removeSpace(nome + cognome).toUpperCase())){
+            if(nome.equals(img + ".jpg") || nome.equals(img + ".png")){
+                img = f.getAbsolutePath() +"\\"+ nome;
                 return  true;
             }
         }
