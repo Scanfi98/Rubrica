@@ -5,11 +5,8 @@
  */
 package rubrica;
 
-import grafica.Interfaccia;
-import grafica.InterfacciaCrea;
-import grafica.InterfacciaModifica;
+import grafica.*;
 import terminal.ConsoleOutputStream;
-import grafica.InterfacciaTerminal;
 
 /**
  *
@@ -24,6 +21,7 @@ public class GlobalVariables {
     public static InterfacciaModifica modifica;
     public static InterfacciaTerminal terminale;
     public static ConsoleOutputStream cos;
+    public static SelezionaImmagineInterfaccia si;
     
     public static final String PATH = "Contatti/";
     

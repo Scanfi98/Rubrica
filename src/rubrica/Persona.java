@@ -5,6 +5,9 @@
  */
 package rubrica;
 
+import java.io.File;
+import java.util.ArrayList;
+
 /**
  *
  * @author Giovanni
@@ -17,6 +20,7 @@ public class Persona {
     private String email;
     private String cognome;
     private String prefisso;
+    private boolean imgPath;
 
     public Persona(String nome, String cognome, String prefisso, String n_phone, String indirizzo, String email) {
         this.prefisso = prefisso;
@@ -25,6 +29,7 @@ public class Persona {
         this.cognome = cognome;
         this.indirizzo = indirizzo;
         this.email = email;
+        this.imgPath = containsImg();
     }
 
     public String getNome() {
@@ -74,7 +79,27 @@ public class Persona {
     public void setPrefisso(String prefisso) {
         this.prefisso = prefisso;
     }
-    
-    
-    
+
+    public boolean isImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(boolean imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public boolean containsImg(){
+        File f = new File("./Immagini");
+
+        f.mkdirs();
+
+        String [] s = f.list();
+
+        for(String nome: s){
+            if(nome.equals(CreaUtente.removeSpace(nome + cognome).toUpperCase())){
+                return  true;
+            }
+        }
+        return false;
+    }
 }

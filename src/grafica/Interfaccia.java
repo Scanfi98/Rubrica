@@ -44,7 +44,7 @@ public final class Interfaccia extends JPanel {
 
     private JPanel JP_lista;
     private JPanel JP_opzioni;
-    private JPanel JP_immagine;
+    private PannelloImmagine JP_immagine;
 
     private JList JLS_contatti;
     private JScrollPane JSP_scroll;
@@ -83,6 +83,7 @@ public final class Interfaccia extends JPanel {
         JF_frame = new JFrame("Rubrica");
         JP_lista = new JPanel();
         JP_opzioni = new JPanel();
+        JP_immagine = new PannelloImmagine(null);
         JLS_contatti = new JList();
         JSP_scroll = new JScrollPane();
         JL_titolo = new JLabel("RUBRICA", SwingConstants.CENTER);
@@ -199,6 +200,9 @@ public final class Interfaccia extends JPanel {
         B_bottoni_box.add(JL_instruction);
         B_bottoni_box.add(Box.createVerticalGlue());
 
+        B_scheda_box.add(Box.createVerticalBox());
+        B_scheda_box.add(JP_immagine);
+        B_scheda_box.add(Box.createGlue());
         B_scheda_box.add(Box.createVerticalStrut(20));
         B_scheda_box.add(JL_nome);
         B_scheda_box.add(Box.createVerticalStrut(20));
