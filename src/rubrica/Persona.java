@@ -6,7 +6,6 @@
 package rubrica;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  *
@@ -87,7 +86,7 @@ public class Persona {
         return imgPath;
     }
 
-    public void setImgPath(boolean imgPath) {
+    public void setImgPath(boolean imgPath) {  
         this.imgPath = imgPath;
     }
 
@@ -103,11 +102,19 @@ public class Persona {
         String [] s = f.list();
 
         for(String nome: s){
-            if(nome.equals(img + ".jpg") || nome.equals(img + ".png")){
+            if(nome.equals(img + ".jpg") || nome.equals(img + ".png") || nome.equals(img)){
                 img = f.getAbsolutePath() +"\\"+ nome;
                 return  true;
             }
         }
         return false;
     }
+
+    public void setImg(String img) {
+        if(img != null) imgPath = true;
+        else imgPath = false;
+        this.img = img;
+    }
+
+    
 }

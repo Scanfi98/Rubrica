@@ -54,16 +54,28 @@ public class PannelloImmagine extends JPanel{
 
     public void setImmagine(String immagine) {
         try {
+            imgPath = immagine;
             this.immagine = ImageIO.read(new File(immagine));
+            this.repaint();
             imgExist = true;
-        } catch (IOException e) {
+        } catch (NullPointerException | IOException e) {
+            
         }
 
     }
     
-    public void removeImmagine(){
+    public void removeImmagine(String imgPath){
+        
         immagine = null;
         imgExist = false;
+        this.repaint();
+        try{
+            File f = new File(imgPath);
+            f.delete();
+        } catch (NullPointerException e){
+            
+        }
+        
     }
 
     public String getImgPath() {

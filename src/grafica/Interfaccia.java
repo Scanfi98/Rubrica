@@ -17,9 +17,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -149,7 +157,6 @@ public final class Interfaccia extends JPanel {
         JL_email = new JLabel("", SwingConstants.CENTER);
 
         //PANNELLI
-        
         JP_lista.setVisible(true);
         JP_lista.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         JP_lista.setLayout(new BorderLayout());
@@ -202,7 +209,6 @@ public final class Interfaccia extends JPanel {
         B_bottoni_box.add(Box.createVerticalStrut(20));
         B_bottoni_box.add(JL_instruction);
         B_bottoni_box.add(Box.createVerticalGlue());
-
 
         B_scheda_box.add(JP_immagine);
         B_scheda_box.add(Box.createVerticalStrut(20));
@@ -466,8 +472,8 @@ public final class Interfaccia extends JPanel {
                     }
                 } catch (AWTException ex) {
                     if (GlobalVariables.stream_enable) {
-                            GlobalVariables.cos.write("Fail on robot creation");
-                        }
+                        GlobalVariables.cos.write("Fail on robot creation");
+                    }
                     System.err.println("Fail on robot creation");
                 }
             }
@@ -476,11 +482,12 @@ public final class Interfaccia extends JPanel {
         JLS_contatti.addListSelectionListener((new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-                Persona p = HM_modello.get((String)JLS_contatti.getSelectedValue());
-                if(p.isImgPath()){
+                Persona p = HM_modello.get((String) JLS_contatti.getSelectedValue());
+                if (p.isImgPath()) {
                     JP_immagine.setImmagine(p.getImg());
                 } else {
-                    JP_immagine.removeImmagine();
+                    JP_immagine.removeImmagine(p.getImg());
+                    p.setImg(null);
                 }
                 if (!JLS_contatti.isSelectionEmpty() && !JTB_multi.isSelected()) {
                     JL_instruction.setVisible(true);
@@ -491,39 +498,59 @@ public final class Interfaccia extends JPanel {
 
             }
         }));
-        
-        
-        B_scheda_box.addMouseListener(new MouseListener(){
+
+        B_scheda_box.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+                String imgPath = null;
                 Component p = B_scheda_box.getComponentAt(e.getPoint());
-                if(!JP_immagine.isImgExist() && p.equals(JP_immagine)){
+                if (!JP_immagine.isImgExist() && p.equals(JP_immagine)) {
                     GlobalVariables.si = new SelezionaImmagineInterfaccia();
-                    GlobalVariables.si.getSelected();
+                    imgPath = GlobalVariables.si.getSelected();
+
+                    
+                    if (imgPath != null) {
+                        String nome = CreaUtente.removeSpace((String) JLS_contatti.getSelectedValue()).toUpperCase();
+                        try {
+                            Interfaccia.copyFile(new File(imgPath), new File("Immagini\\" + nome));
+                            HM_modello.get((String) JLS_contatti.getSelectedValue()).setImg("Immagini\\" + nome);
+                            JP_immagine.setImmagine("Immagini\\" + nome);
+                            JP_immagine.repaint();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Interfaccia.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                } else {
+                    if (e.isControlDown()) {
+                        JP_immagine.removeImmagine(HM_modello.get(JLS_contatti.getSelectedValue()).getImg());
+                        HM_modello.get(JLS_contatti.getSelectedValue()).setImg(null);
+                    }
                 }
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                
+
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                
+
             }
-            
+
         });
     }
 
@@ -567,6 +594,21 @@ public final class Interfaccia extends JPanel {
 
     public HashMap<String, Persona> getMap() {
         return HM_modello;
+    }
+
+    private static void copyFile(File source, File dest)
+            throws IOException {
+        FileChannel inputChannel = null;
+        FileChannel outputChannel = null;
+        try {
+            inputChannel = new FileInputStream(source).getChannel();
+            outputChannel = new FileOutputStream(dest).getChannel();
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+        } finally {
+            inputChannel.close();
+            outputChannel.close();
+        }
+
     }
 
 }
