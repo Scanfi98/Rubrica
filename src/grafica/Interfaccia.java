@@ -13,14 +13,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -150,6 +149,7 @@ public final class Interfaccia extends JPanel {
         JL_email = new JLabel("", SwingConstants.CENTER);
 
         //PANNELLI
+        
         JP_lista.setVisible(true);
         JP_lista.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         JP_lista.setLayout(new BorderLayout());
@@ -203,9 +203,8 @@ public final class Interfaccia extends JPanel {
         B_bottoni_box.add(JL_instruction);
         B_bottoni_box.add(Box.createVerticalGlue());
 
-        B_scheda_box.add(Box.createVerticalBox());
+
         B_scheda_box.add(JP_immagine);
-        B_scheda_box.add(Box.createGlue());
         B_scheda_box.add(Box.createVerticalStrut(20));
         B_scheda_box.add(JL_nome);
         B_scheda_box.add(Box.createVerticalStrut(20));
@@ -477,11 +476,11 @@ public final class Interfaccia extends JPanel {
         JLS_contatti.addListSelectionListener((new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-                Persona p = HM_modello.get(JLS_contatti.getSelectedValue());
+                Persona p = HM_modello.get((String)JLS_contatti.getSelectedValue());
                 if(p.isImgPath()){
                     JP_immagine.setImmagine(p.getImg());
                 } else {
-
+                    JP_immagine.removeImmagine();
                 }
                 if (!JLS_contatti.isSelectionEmpty() && !JTB_multi.isSelected()) {
                     JL_instruction.setVisible(true);
@@ -492,6 +491,40 @@ public final class Interfaccia extends JPanel {
 
             }
         }));
+        
+        
+        B_scheda_box.addMouseListener(new MouseListener(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Component p = B_scheda_box.getComponentAt(e.getPoint());
+                if(!JP_immagine.isImgExist() && p.equals(JP_immagine)){
+                    GlobalVariables.si = new SelezionaImmagineInterfaccia();
+                    GlobalVariables.si.getSelected();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                
+            }
+            
+        });
     }
 
     /*---------------------------AGGIUNTA VALORI------------------------------*/

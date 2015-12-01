@@ -1,14 +1,9 @@
 package grafica;
 
-import rubrica.GlobalVariables;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 
 /**
@@ -28,7 +23,8 @@ public class SelezionaImmagineInterfaccia extends JFileChooser {
         this.setVisible(true);
         this.setCurrentDirectory(new File("C:\\Users\\Giovanni\\AppData\\"));
         this.setPreferredSize(new Dimension(700, 500));
-        this.setFileFilter(new FileNameExtensionFilter("Testo (.txt)","txt"));
+        this.setFileFilter(new FileNameExtensionFilter("Immagine (.png)","png"));
+        this.setFileFilter(new FileNameExtensionFilter("Immagine (.jpg)","jpg"));
         this.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 

@@ -20,7 +20,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class PannelloImmagine extends JPanel implements MouseListener{
+public class PannelloImmagine extends JPanel{
 
     private BufferedImage immagine;
     private String imgPath;
@@ -31,14 +31,11 @@ public class PannelloImmagine extends JPanel implements MouseListener{
         this.imgPath = imgPath;
 		try {
 			immagine = ImageIO.read(new File(imgPath));
-            imgExist = true;
-		} catch (IOException ex) {
+                        imgExist = true;
+		} catch (IOException | NullPointerException ex) {
 			this.setBackground(Color.WHITE);
-            imgExist = false;
-		} catch (NullPointerException ex){
-            this.setBackground(Color.WHITE);
-            imgExist = false;
-        }
+                        imgExist = false;
+		}
     }
 
     @Override
@@ -59,36 +56,24 @@ public class PannelloImmagine extends JPanel implements MouseListener{
         try {
             this.immagine = ImageIO.read(new File(immagine));
             imgExist = true;
-            paintComponent(this.getGraphics());
         } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if(!imgExist)GlobalVariables.si = new SelezionaImmagineInterfaccia();
-        GlobalVariables.si.getSelected();
+    
+    public void removeImmagine(){
+        immagine = null;
+        imgExist = false;
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-
+    public String getImgPath() {
+        return imgPath;
     }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
+    public boolean isImgExist() {
+        return imgExist;
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
+    
 
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 }
